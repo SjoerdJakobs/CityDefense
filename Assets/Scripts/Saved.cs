@@ -9,12 +9,12 @@ public class Saved : MonoBehaviour {
     private bool encrypted = true;
 
     /// <summary>
-    /// in this script is all the info over the city
+    /// in this script is all the info over the Game
     /// </summary>
 
-    //ints
+    #region "City ints"
     [SerializeField]
-    private int castle;
+    protected int castle;
     public int _Castle
     {
         get { return castle; }
@@ -154,6 +154,13 @@ public class Saved : MonoBehaviour {
         set { coalMine = value; }
     }
     [SerializeField]
+    private int woodcuttersCamp;
+    public int _WoodcuttersCamp
+    {
+        get { return woodcuttersCamp; }
+        set { woodcuttersCamp = value; }
+    }
+    [SerializeField]
     private int woodMill;
     public int _WoodMill
     {
@@ -167,17 +174,16 @@ public class Saved : MonoBehaviour {
         get { return plains; }
         set { castle = value; }
     }
+    #endregion
 
     public void saveResource()
     {
         if (!encrypted)
         {
             INIParser ini = new INIParser();
-            // Open the save file. If the save file does not exist, INIParser automatically create
-            // one
             ini.Open(Application.dataPath + "/SAVES/devSave.SAV");
-            // Read the score. If the section/key does not exist, default score to 10
 
+            //City ints
             ini.WriteValue("City", "Castle", _Castle);
             ini.WriteValue("City", "KnightsCastle", _KnightsCastle);
             ini.WriteValue("City", "Wall", _Wall);
@@ -198,6 +204,7 @@ public class Saved : MonoBehaviour {
             ini.WriteValue("City", "GoldMine", _GoldMine);
             ini.WriteValue("City", "IronMine", _IronMine);
             ini.WriteValue("City", "CoalMine", _CoalMine);
+            ini.WriteValue("City", "WoodcuttersCamp", _WoodcuttersCamp);
             ini.WriteValue("City", "WoodMill", _WoodMill);
             ini.WriteValue("City", "Plains", _Plains);
 
@@ -206,32 +213,37 @@ public class Saved : MonoBehaviour {
         }
         else
         {
-            SaveData saveData = new SaveData();
+            SaveCityData saveCityData = new SaveCityData();
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(Application.dataPath + "/SAVES/save.SAV");
-            saveData.castle = _Castle;
-            saveData.knightsCastle = _KnightsCastle;
-            saveData.wall = _Wall;
-            saveData.secondWall = _SecondWall;
-            saveData.thirdWall = _ThirdWall;
-            saveData.guardTowers = _GuardTowers;
-            saveData.barracks = _Barracks;
-            saveData.patrollCentre = _PatrollCentre;
-            saveData.blacksmith = _Blacksmith;
-            saveData.housing = _Housing;
-            saveData.aphothecary = _Aphothecary;
-            saveData.treasurery = _Treasurery;
-            saveData.granary = _Granary;
-            saveData.storageHouse = _StorageHouse;
-            saveData.tradingGuild = _TradingGuild;
-            saveData.school = _School;
-            saveData.mill = _Mill;
-            saveData.goldMine = _GoldMine;
-            saveData.ironMine = _IronMine;
-            saveData.coalMine = _CoalMine;
-            saveData.woodMill = _WoodMill;
-            saveData.plains = _Plains;
-            bf.Serialize(file, saveData);
+
+            //City ints
+            saveCityData.castle = _Castle;
+            saveCityData.knightsCastle = _KnightsCastle;
+            saveCityData.wall = _Wall;
+            saveCityData.secondWall = _SecondWall;
+            saveCityData.thirdWall = _ThirdWall;
+            saveCityData.guardTowers = _GuardTowers;
+            saveCityData.barracks = _Barracks;
+            saveCityData.patrollCentre = _PatrollCentre;
+            saveCityData.blacksmith = _Blacksmith;
+            saveCityData.housing = _Housing;
+            saveCityData.aphothecary = _Aphothecary;
+            saveCityData.treasurery = _Treasurery;
+            saveCityData.granary = _Granary;
+            saveCityData.storageHouse = _StorageHouse;
+            saveCityData.tradingGuild = _TradingGuild;
+            saveCityData.school = _School;
+            saveCityData.mill = _Mill;
+            saveCityData.goldMine = _GoldMine;
+            saveCityData.ironMine = _IronMine;
+            saveCityData.coalMine = _CoalMine;
+            saveCityData.woodcuttersCamp = _WoodcuttersCamp;
+            saveCityData.woodMill = _WoodMill;
+            saveCityData.plains = _Plains;
+
+
+            bf.Serialize(file, saveCityData);
             file.Close();
             Debug.Log(Application.persistentDataPath);
             Debug.Log("saved ");
@@ -244,10 +256,9 @@ public class Saved : MonoBehaviour {
         if (!encrypted)
         {
             INIParser ini = new INIParser();
-            // Open the save file. If the save file does not exist, INIParser automatically create
-            // one
             ini.Open(Application.dataPath + "/SAVES/devSave.SAV");
 
+            //City ints
             _Castle = ini.ReadValue("City", "Castle", 0);
             _KnightsCastle = ini.ReadValue("City", "KnightsCastle", 0);
             _Wall = ini.ReadValue("City", "Wall", 0);
@@ -268,6 +279,7 @@ public class Saved : MonoBehaviour {
             _GoldMine = ini.ReadValue("City", "GoldMine", 0);
             _IronMine = ini.ReadValue("City", "IronMine", 0);
             _CoalMine = ini.ReadValue("City", "CoalMine", 0);
+            _WoodcuttersCamp = ini.ReadValue("City", "WoodcuttersCamp", 0);
             _WoodMill = ini.ReadValue("City", "WoodMill", 0);
             _Plains = ini.ReadValue("City", "Plains", 0);
 
@@ -279,29 +291,33 @@ public class Saved : MonoBehaviour {
             if (File.Exists(Application.dataPath + "/SAVES/save.SAV"))
             {
                 FileStream file = File.Open(Application.dataPath + "/SAVES/save.SAV", FileMode.Open);
-                SaveData saveData = (SaveData)bf.Deserialize(file);
-                _Castle = saveData.castle;
-                _KnightsCastle = saveData.knightsCastle;
-                _Wall = saveData.wall;
-                _SecondWall = saveData.secondWall;
-                _ThirdWall = saveData.thirdWall;
-                _GuardTowers = saveData.guardTowers;
-                _Barracks = saveData.barracks;
-                _PatrollCentre = saveData.patrollCentre;
-                _Blacksmith = saveData.blacksmith;
-                _Housing = saveData.housing;
-                _Aphothecary = saveData.aphothecary;
-                _Treasurery = saveData.treasurery;
-                _Granary = saveData.granary;
-                _StorageHouse = saveData.storageHouse;
-                _TradingGuild = saveData.tradingGuild;
-                _School = saveData.school;
-                _Mill = saveData.mill;
-                _GoldMine = saveData.goldMine;
-                _IronMine = saveData.ironMine;
-                _CoalMine = saveData.coalMine;
-                _WoodMill = saveData.woodMill;
-                _Plains = saveData.plains;
+                SaveCityData saveCityData = (SaveCityData)bf.Deserialize(file);
+
+                //City ints
+                _Castle = saveCityData.castle;
+                _KnightsCastle = saveCityData.knightsCastle;
+                _Wall = saveCityData.wall;
+                _SecondWall = saveCityData.secondWall;
+                _ThirdWall = saveCityData.thirdWall;
+                _GuardTowers = saveCityData.guardTowers;
+                _Barracks = saveCityData.barracks;
+                _PatrollCentre = saveCityData.patrollCentre;
+                _Blacksmith = saveCityData.blacksmith;
+                _Housing = saveCityData.housing;
+                _Aphothecary = saveCityData.aphothecary;
+                _Treasurery = saveCityData.treasurery;
+                _Granary = saveCityData.granary;
+                _StorageHouse = saveCityData.storageHouse;
+                _TradingGuild = saveCityData.tradingGuild;
+                _School = saveCityData.school;
+                _Mill = saveCityData.mill;
+                _GoldMine = saveCityData.goldMine;
+                _IronMine = saveCityData.ironMine;
+                _CoalMine = saveCityData.coalMine;
+                _WoodcuttersCamp = saveCityData.woodcuttersCamp;
+                _WoodMill = saveCityData.woodMill;
+                _Plains = saveCityData.plains;
+
                 file.Close();
             }
         }
@@ -310,7 +326,7 @@ public class Saved : MonoBehaviour {
     }
 
     [System.Serializable]
-    public class SaveData
+    public class SaveCityData
     {
         public int castle;
         public int knightsCastle;
@@ -332,6 +348,7 @@ public class Saved : MonoBehaviour {
         public int goldMine;
         public int ironMine;
         public int coalMine;
+        public int woodcuttersCamp;
         public int woodMill;
         public int plains;
     }
