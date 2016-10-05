@@ -2,26 +2,26 @@
 using UnityEditor;
 using System.Collections;
 
-[CustomEditor(typeof(Saved))]
+[CustomEditor(typeof(LoadAndSave))]
 public class savedEditor : Editor
 {
 
     public override void OnInspectorGUI()
     {
 
-        Saved saveInfo = (Saved)target;
+        LoadAndSave saveInfo = (LoadAndSave)target;
         DrawDefaultInspector();
         //EditorGUILayout.LabelField("castle", saveInfo._Castle.ToString());
         //this.Repaint();
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("saveResources"))
         {
-            saveInfo.saveResource();
+            saveInfo.SaveCities();
         }
-        if (GUILayout.Button("loadResources"))
+        /*if (GUILayout.Button("loadResources"))
         {
             saveInfo.loadResource();
-        }
+        }*/
         GUILayout.EndHorizontal();
     }
 }

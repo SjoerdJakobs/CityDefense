@@ -8,11 +8,24 @@ public class Saved : MonoBehaviour {
     [SerializeField]
     private bool encrypted = true;
 
+    private void Awake()
+    {
+        //StaticCitiesList.Cities.Add(gameObject);
+    }
     /// <summary>
     /// in this script is all the info over the Game
     /// </summary>
 
-    #region "City ints"
+
+    [SerializeField]
+    private string cityName;
+    public string _CityName
+    {
+        get { return cityName; }
+        set { cityName = value; }
+    }
+
+        #region "City ints"
     [SerializeField]
     protected int castle;
     public int _Castle
@@ -183,6 +196,7 @@ public class Saved : MonoBehaviour {
             INIParser ini = new INIParser();
             ini.Open(Application.dataPath + "/SAVES/devSave.SAV");
 
+            ini.WriteValue("City", "CityName", _CityName);
             //City ints
             ini.WriteValue("City", "Castle", _Castle);
             ini.WriteValue("City", "KnightsCastle", _KnightsCastle);
@@ -217,6 +231,7 @@ public class Saved : MonoBehaviour {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(Application.dataPath + "/SAVES/save.SAV");
 
+            saveCityData.CityName = _CityName;
             //City ints
             saveCityData.castle = _Castle;
             saveCityData.knightsCastle = _KnightsCastle;
@@ -258,6 +273,7 @@ public class Saved : MonoBehaviour {
             INIParser ini = new INIParser();
             ini.Open(Application.dataPath + "/SAVES/devSave.SAV");
 
+            _CityName = ini.ReadValue("City", "CityName", "City");
             //City ints
             _Castle = ini.ReadValue("City", "Castle", 0);
             _KnightsCastle = ini.ReadValue("City", "KnightsCastle", 0);
@@ -293,6 +309,7 @@ public class Saved : MonoBehaviour {
                 FileStream file = File.Open(Application.dataPath + "/SAVES/save.SAV", FileMode.Open);
                 SaveCityData saveCityData = (SaveCityData)bf.Deserialize(file);
 
+                _CityName = saveCityData.CityName;
                 //City ints
                 _Castle = saveCityData.castle;
                 _KnightsCastle = saveCityData.knightsCastle;
@@ -328,6 +345,7 @@ public class Saved : MonoBehaviour {
     [System.Serializable]
     public class SaveCityData
     {
+        public string CityName;
         public int castle;
         public int knightsCastle;
         public int wall;
