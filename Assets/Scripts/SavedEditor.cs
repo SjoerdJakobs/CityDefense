@@ -18,10 +18,10 @@ public class savedEditor : Editor
         {
             saveInfo.SaveCities();
         }
-        /*if (GUILayout.Button("loadResources"))
+        if (GUILayout.Button("loadResources"))
         {
-            saveInfo.loadResource();
-        }*/
+            saveInfo.LoadCities();
+        }
         GUILayout.EndHorizontal();
     }
 }

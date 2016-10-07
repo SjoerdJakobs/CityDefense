@@ -3,9 +3,6 @@ using System.Collections;
 
 public class City : MonoBehaviour {
 
-    [SerializeField]
-    private bool encrypted = true;
-
     private void Awake()
     {
         StaticCitiesList.Cities.Add(gameObject);
@@ -16,7 +13,13 @@ public class City : MonoBehaviour {
     /// <summary>
     /// in this script is all the info over the Game
     /// </summary>
-
+    [SerializeField]
+    private int cityOwner;
+    public int _CityOwner
+    {
+        get { return cityOwner; }
+        set { cityOwner = value; }
+    }
 
     [SerializeField]
     private string cityName;
